@@ -1,0 +1,40 @@
+﻿@page "/classWithhunderdstudent"
+@inject MyDbContext _Context
+@using Microsoft.EntityFrameworkCore
+@using StudentManage.Models
+
+<h3>ClassWithhunderdstudent</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Class Name</th>
+            <th>Room Number</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var classInfo in GetclassWithhunderdstudent())
+        {
+            <tr>
+                <td>@classInfo.Name</td>
+                <td>@classInfo.RoomNumber</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    public List<Classtbl> GetclassWithhunderdstudent()
+    {
+        var classesWithMoreThan100Students = _Context.Classtbls
+        .Include(c => c.Enrolleds) 
+        .Where(c => c.Enrolleds.Count > 100) 
+        .ToList();
+             
+
+
+        return classesWithMoreThan100Students;
+    }
+}
+
+
+

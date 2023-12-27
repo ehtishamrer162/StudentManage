@@ -1,0 +1,39 @@
+﻿@page "/studentsNoClassesInDept22"
+@inject MyDbContext DbContext
+@using StudentManage.Models
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.EntityFrameworkCore.Query
+<h3>Students with No Classes in Department 22</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Student ID</th>
+            <th>Major</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in GetStudentsWithNoClassesInDepartment22())
+        {
+            <tr>
+                <td>@student.Sid</td>
+                <td>@student.Smajor</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+
+    public List<Student> GetStudentsWithNoClassesWithTeachersInDept22()
+    {
+        var studentsWithNoClassesWithTeachersInDept22 =
+            DbContext.Students
+                .Where(student => !student.Enrolleds.Any(e =>
+                    e.Classtbl.Faculties.Any(f => f.Deptid == 22)))  // Use Faculties (plural)
+                .ToList();
+
+        return studentsWithNoClassesWithTeachersInDept22;
+    }
+
+}
+
